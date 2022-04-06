@@ -10,25 +10,25 @@ import {deleteCity} from '../../../api';
 
 const columns = [
     {
-    name: 'Country Code',
-    selector: 'country_code',
+    name: 'Country Name',
+    selector: 'country_name',
     sortable: true
     },
-    {
-        name: 'Country id',
-        selector: 'country_id',
-        sortable: true
-        },
+    // {
+    //     name: 'Country id',
+    //     selector: 'country_id',
+    //     sortable: true
+    //     },
     {
         name: 'State Code',
-        selector: 'state_code',
+        selector: 'state_name',
         sortable: true
      },
-     {
-        name: 'State Id',
-        selector: 'state_id',
-        sortable: true
-     },
+    //  {
+    //     name: 'State Id',
+    //     selector: 'state_id',
+    //     sortable: true
+    //  },
      {
             name: 'City Name',
             selector: 'city_name',
@@ -61,8 +61,26 @@ const columns = [
                </div>
             ]
            },
-
-
+           {
+            name:'Active',
+            selector: 'null',
+            cell: (row) => [
+                <input type='checkbox' checked={row.status== 'Active'}  onClick={async(e) =>
+                  {
+                    if(row.status == 'Active'){
+                      const checkvalue ='Deactive'
+                      await deleteCity(row.sno,checkvalue)
+                          window.location.href='Showcity'
+        
+                    }
+                    else{
+                      const checkvalue ='Active'
+                      await deleteCity(row.sno,checkvalue)
+                          window.location.href='Showcity'
+                    }
+                   }} />
+            ]
+          },
 
        {
         name: "Actions",

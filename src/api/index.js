@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-export const register = async (org_name, org_country, org_state, org_street1, org_street2, org_city, org_pin, org_currency, org_lang, org_timezone, org_gst) => {
+export const register = async (org_name, org_country, org_state, org_street,  org_currency, org_lang, org_gst,org_contact_name,org_contact_phone,org_contact_email,org_city, org_pin) => {
+    console.log(org_name, org_country, org_state, org_street,  org_currency, org_lang, org_gst,org_contact_name,org_contact_phone,org_contact_email,org_city, org_pin)
     const url = `http://192.168.146.103:3008/org`
-    return axios.post(url, {org_name, org_country, org_state, org_street1, org_street2, org_city, org_pin, org_currency, org_lang, org_timezone, org_gst}).then(response => response.data).catch(error => console.log(error));
+    return axios.post(url, {org_name, org_country, org_state, org_street,  org_currency, org_lang, org_gst,org_contact_name,org_contact_phone,org_contact_email,org_city, org_pin}).then(response => response.data).catch(error => console.log(error));
 }
 export const addstates = async (state_name, country_name, state_code, state_short_name, select_type) => {
     const url = `http://192.168.146.103:3008/api/state`
@@ -21,9 +22,15 @@ export const showstate = async (sno) => {
     return axios.post(url, {sno}).then(response => response.data).catch(error => console.log(error));
 }
 
-export const updateState = async (sno, state_name, country_name, state_code, state_short_name, select_type) => {
+export const updateState = async (sno, country_name,state_name, state_code, state_short_name, select_type) => {
+    console.log(sno,country_name,state_name,state_code,state_short_name,select_type)
     const url = `http://192.168.146.103:3008/api/EditState`
-    return axios.post(url, {sno, state_name, country_name, state_code, state_short_name, select_type}).then(response => response.data).catch(error => console.log(error));
+    return axios.post(url, {sno,country_name, state_name, state_code, state_short_name, select_type}).then(response => response.data).catch(error => console.log(error));
+}
+export const showstateCity = async (country) => {
+    console.log(country)
+    const url = `http://192.168.146.103:3008/api/showstateCity`
+    return axios.post(url, {country}).then(response => response.data).catch(error => console.log(error));
 }
 
 export const Totalcountry = async () => {
@@ -78,9 +85,11 @@ export const Totalcity = async () => {
     const url = `http://192.168.146.103:3008/api/Totalcity`
     return axios.get(url).then(response => response.data).catch(error => console.log(error));
 }
-export const InsertCity = async (city_id, city_name, state_id, state_code, country_id, country_code) => {
+
+export const InsertCity = async (city_id, city_name,  state_name, country_name) => {
+    console.log(city_id, city_name,  state_name, country_name)
     const url = `http://192.168.146.103:3008/api/InsertCity`
-    return axios.post(url, {city_id, city_name, state_id, state_code, country_id, country_code}).then(response => response.data).catch(error => console.log(error));
+    return axios.post(url, {city_id, city_name, state_name, country_name}).then(response => response.data).catch(error => console.log(error));
 }
 
 export const deleteCity = async (sno,status) => {
@@ -93,9 +102,13 @@ export const showCity = async (sno) => {
     return axios.post(url, {sno}).then(response => response.data).catch(error => console.log(error));
 }
 
-export const updateCity = async (sno, city_id, city_name, state_id, state_code, country_id, country_code) => {
+export const updateCity = async (sno, city_id, city_name, state_name,country_name) => {
     const url = `http://192.168.146.103:3008/api/UpdateCity`
-    return axios.post(url, {sno, city_id, city_name, state_id, state_code, country_id, country_code}).then(response => response.data).catch(error => console.log(error));
+    return axios.post(url, {sno, city_id, city_name, state_name,country_name}).then(response => response.data).catch(error => console.log(error));
+}
+export const getCity = async (state_name) => {
+    const url = `http://192.168.146.103:3008/api/getCity`
+    return axios.post(url, {state_name}).then(response => response.data).catch(error => console.log(error));
 }
 
 
@@ -181,3 +194,91 @@ export const deleteUser = async (sno,status) => {
     return axios.post(url, {sno,status}).then(response => response.data).catch(error => console.log(error));
 }
 
+
+export const TotalCustomers = async () => {
+    const url = `http://192.168.146.103:3008/api/TotalCustomer`
+    return axios.get(url).then(response => response.data).catch(error => console.log(error));
+}
+
+export const DeleteCustomer = async (sno,status) => {
+    const url = `http://192.168.146.103:3008/api/DeleteCustomer`
+    return axios.post(url, {sno,status}).then(response => response.data).catch(error => console.log(error));
+}
+
+export const AddCustomer = async (mast_id,cust_type,cust_name,company_name,cust_display_name,cust_email,cust_work_phone,cust_phone,skype_detail,designation,department,website,gst_treatment,gstin_uin,pan_no,place_of_supply,tax_preference,exemption_reason,currency,
+    opening_balance,payment_terms,enable_portal,portal_language,facebook_url,twitter_url,billing_address_attention,billing_address_country,
+    billing_address_city,billing_address_state,billing_address_pincode,billing_address_phone,billing_address_fax,contact_person_name,
+    contact_person_email,contact_person_work_phone,contact_person_phone,contact_person_skype,contact_person_designation,
+    contact_person_department,remark) => {
+        console.log(mast_id,cust_type,cust_name,company_name,cust_display_name,cust_email,cust_work_phone,cust_phone,skype_detail,designation,department,website,gst_treatment,gstin_uin,pan_no,place_of_supply,tax_preference,exemption_reason,currency,
+            opening_balance,payment_terms,enable_portal,portal_language,facebook_url,twitter_url,billing_address_attention,billing_address_country,
+            billing_address_city,billing_address_state,billing_address_pincode,billing_address_phone,billing_address_fax,contact_person_name,
+            contact_person_email,contact_person_work_phone,contact_person_phone,contact_person_skype,contact_person_designation,
+            contact_person_department,remark)
+    const url = `http://192.168.146.103:3008/api/AddCustomer`
+    return axios.post(url, {mast_id,cust_type,cust_name,company_name,cust_display_name,cust_email,cust_work_phone,cust_phone,skype_detail,designation,department,website,gst_treatment,gstin_uin,pan_no,place_of_supply,tax_preference,exemption_reason,currency,
+        opening_balance,payment_terms,enable_portal,portal_language,facebook_url,twitter_url,billing_address_attention,billing_address_country,
+        billing_address_city,billing_address_state,billing_address_pincode,billing_address_phone,billing_address_fax,contact_person_name,
+        contact_person_email,contact_person_work_phone,contact_person_phone,contact_person_skype,contact_person_designation,
+        contact_person_department,remark}).then(response => response.data).catch(error => console.log(error));
+}
+
+export const ShowCustomer = async (sno) => {
+    const url = `http://192.168.146.103:3008/api/ShowCustomer`
+    return axios.post(url, {sno}).then(response => response.data).catch(error => console.log(error));
+}
+
+export const UpdateCustomer = async (sno,cust_email,cust_work_phone,cust_phone,contact_person_name,contact_person_email,contact_person_work_phone,contact_person_phone,contact_person_skype,contact_person_designation,
+    contact_person_department,remark) => {
+        console.log(sno,cust_email,cust_work_phone,cust_phone,contact_person_name,contact_person_email,contact_person_work_phone,contact_person_phone,contact_person_skype,contact_person_designation,
+            contact_person_department,remark)
+    const url = `http://192.168.146.103:3008/api/UpdateCustomer`
+    return axios.post(url, {sno,cust_email,cust_work_phone,cust_phone,contact_person_name,contact_person_email,contact_person_work_phone,contact_person_phone,contact_person_skype,contact_person_designation,
+        contact_person_department,remark}).then(response => response.data).catch(error => console.log(error));
+}
+
+export const InsertVendor = async (mast_id,vend_id,vend_name,
+    company_name,vend_display_name,vend_email,vend_work_phone,vend_phone,skype_detail,designation,department,
+    website,gst_treatment,gstin_uin,pan_no,source_of_supply,currency,
+    opening_balance,payment_terms,tds,enable_portal,portal_language,facebook_url,twitter_url,
+    billing_address_attention,billing_address_country,
+    billing_address_city,billing_address_state,billing_address_pincode,billing_address_phone,
+    billing_address_fax,contact_person_name,
+    contact_person_email,contact_person_work_phone,contact_person_phone,contact_person_skype,contact_person_designation,
+    contact_person_department,remark,status,add_date_time,add_user_name,add_system_name,add_ip_address) => {
+         
+    const url = `http://192.168.146.103:3008/api/InsertVendor`
+    return axios.post(url, {mast_id,vend_id,vend_name,
+        company_name,vend_display_name,vend_email,vend_work_phone,vend_phone,skype_detail,designation,department,
+        website,gst_treatment,gstin_uin,pan_no,source_of_supply,currency,
+        opening_balance,payment_terms,tds,enable_portal,portal_language,facebook_url,twitter_url,
+        billing_address_attention,billing_address_country,
+        billing_address_city,billing_address_state,billing_address_pincode,billing_address_phone,
+        billing_address_fax,contact_person_name,
+        contact_person_email,contact_person_work_phone,contact_person_phone,contact_person_skype,contact_person_designation,
+        contact_person_department,remark,status,add_date_time,add_user_name,add_system_name,add_ip_address}).then(response => response.data).catch(error => console.log(error));
+}
+
+export const ShowVendor = async () => {
+    const url = `http://192.168.146.103:3008/api/ShowVendor`
+    return axios.get(url).then(response => response.data).catch(error => console.log(error));
+}
+
+
+export const DeleteVendor = async (sno,status) => {
+    const url = `http://192.168.146.103:3008/api/DeleteVendor`
+    return axios.post(url, {sno,status}).then(response => response.data).catch(error => console.log(error));
+}
+
+export const showvendor = async (sno) => {
+    const url = `http://192.168.146.103:3008/api/Vendor`
+    return axios.post(url, {sno}).then(response => response.data).catch(error => console.log(error));
+}
+export const UpdateVendor = async (sno,vend_email,vend_work_phone,vend_phone,contact_person_name,
+    contact_person_email,contact_person_work_phone,contact_person_phone,contact_person_skype,contact_person_designation,
+    contact_person_department,remark) => {
+    const url = `http://192.168.146.103:3008/api/UpdateVendor`
+    return axios.post(url, {sno,vend_email,vend_work_phone,vend_phone,contact_person_name,
+        contact_person_email,contact_person_work_phone,contact_person_phone,contact_person_skype,contact_person_designation,
+        contact_person_department,remark}).then(response => response.data).catch(error => console.log(error));
+}
