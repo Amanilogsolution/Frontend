@@ -1,7 +1,20 @@
-import React, { Component } from 'react'
+import React from 'react';
+import { UserLogout } from '../../api';
 
-export default class Menu extends Component {
-  render() {
+ const Menu = () =>  {
+
+   const handleClick = async()=>{
+     const result = await UserLogout(localStorage.getItem('username'))
+     console.log(result)
+     if(result.status == 'Logout'){
+      // localStorage.removeItem("username")
+      // localStorage.removeItem("Token")
+      localStorage.clear()
+       window.location.href='/'
+     }
+   
+   }
+
     return (
    <div>
   <aside className="main-sidebar sidebar-light-primary elevation-4">
@@ -51,10 +64,26 @@ export default class Menu extends Component {
             </a>
             <ul className="nav nav-treeview">
               <li className="nav-item">
+                <a href="#" className="nav-link active"> 
+                &nbsp; &nbsp; &nbsp;   
+                  <p> Customer</p>
+                  <i className="right fas fa-angle-left" />
+                </a>
+
+                <ul className="nav nav-treeview">
+                <li className="nav-item">
                 <a href="/TotalCustomer" className="nav-link active">
                   <i className="far fa-circle nav-icon" />
                   <p> Customer</p>
                 </a>
+                    </li>
+                    <li className="nav-item">
+                <a href="/TotalCustAddress" className="nav-link active">
+                  <i className="far fa-circle nav-icon" />
+                  <p>Addresses</p>
+                </a>
+                    </li>
+                </ul>
               </li>
             </ul>
           </li>
@@ -68,11 +97,30 @@ export default class Menu extends Component {
             </a>
             <ul className="nav nav-treeview">
               <li className="nav-item">
+             <a href="#" className="nav-link active">
+                  {/* <i className="far fa-circle nav-icon" /> */}
+                  
+                  <p> Vendor</p>
+                 <i className="right fas fa-angle-left" />
+                </a>
+                <ul className="nav nav-treeview">
+                <li className="nav-item">
                 <a href="/Showvendor" className="nav-link active">
                   <i className="far fa-circle nav-icon" />
                   <p> Vendor</p>
                 </a>
+                    </li>
+                     <li className="nav-item">
+                <a href="/TotalVendAddress" className="nav-link active">
+                  <i className="far fa-circle nav-icon" />
+                  <p>Address</p>
+                </a>
               </li>
+
+                </ul>
+
+              </li>
+             
             </ul>
           </li>
           <li className="nav-item">
@@ -143,7 +191,7 @@ export default class Menu extends Component {
         
           <li className="nav-header"></li>
           <li className="nav-item">
-            <a href="/" className="nav-link">
+            <a onClick={handleClick} className="nav-link">
               <p>
                 Logout
               </p>
@@ -157,4 +205,6 @@ export default class Menu extends Component {
 
     )
   }
-}
+
+
+export default Menu

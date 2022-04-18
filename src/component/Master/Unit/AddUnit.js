@@ -10,11 +10,21 @@ import {Unit} from '../../../api';
         e.preventDefault();
         const unit_name = document.getElementById('unit_name').value;
         const unit_symbol = document.getElementById('unit_symbol').value;
+
+        if(!unit_name||!unit_symbol){
+          alert('Enter data')
+        }else{
        
         const result = await Unit(unit_name,unit_symbol);
-        if(result){
-            window.location.href = '/ShowUnit'
+        console.log(result)
+
+        if(result == "Already"){
+          alert('Already in Database')
+        }else{
+          window.location.href = '/ShowUnit'
         }
+      }
+      
     }
  
     return (

@@ -34,27 +34,46 @@ const columns = [
         sortable: true  
     },
     {
-        name:'Active',
-        selector: 'status',
-        sortable: true,
-        cell: (row) => [
-            <input type='checkbox' checked={row.status == 'Active'} value={row.status} onClick = {async(e) =>
-              {
-                console.log(e.target.value)
-                if(row.status == 'Active'){
-                  const checkvalue ='Deactive'
-                  await DeleteCustomer(row.sno,checkvalue)
-                      window.location.href='TotalCustomer'
+      name: 'Status',
+      sortable: true,
+      selector: 'null',
+      cell: (row) => [
+        <div className='droplist'>
+          <select onChange={async (e) => {
+            const status = e.target.value;
+            await DeleteCustomer(row.sno, status)
+            window.location.href = 'TotalCustomer'
+          }
+          }>
+            <option selected disabled hidden> {row.status}</option>
+            <option value='Active'>Active</option>
+            <option value='DeActive' >DeActive</option>
+          </select>
+        </div>
+      ]
+    },
+    // {
+    //     name:'Active',
+    //     selector: 'status',
+    //     sortable: true,
+    //     cell: (row) => [
+    //         <input type='checkbox' checked={row.status == 'Active'} value={row.status} onClick = {async(e) =>
+    //           {
+    //             console.log(e.target.value)
+    //             if(row.status == 'Active'){
+    //               const checkvalue ='Deactive'
+    //               await DeleteCustomer(row.sno,checkvalue)
+    //                   window.location.href='TotalCustomer'
     
-                }
-                else{
-                  const checkvalue ='Active'
-                  await DeleteCustomer(row.sno,checkvalue)
-                      window.location.href='TotalCustomer'
-                }
-               }} />
-        ]
-      },
+    //             }
+    //             else{
+    //               const checkvalue ='Active'
+    //               await DeleteCustomer(row.sno,checkvalue)
+    //                   window.location.href='TotalCustomer'
+    //             }
+    //            }} />
+    //     ]
+    //   },
       {
         name: "Actions",
         sortable: false,

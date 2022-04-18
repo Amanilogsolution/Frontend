@@ -13,9 +13,15 @@ import {InsertCountry} from '../../../api';
         const country_code = document.getElementById('country_code').value;
         const country_phonecode = document.getElementById('Country_phonecode').value;
         const result = await InsertCountry(country_name,country_id,country_code,country_phonecode);
-        if(result){
-            window.location.href = '/ShowCountry'
+        if(!country_name||!country_id||!country_code||!country_phonecode){
+          alert('Enter data')
+        }else{
+        if(result == "Already"){
+          alert('Already')
+        }else{
+          window.location.href = '/ShowCountry'
         }
+      }
     }
  
     return (
@@ -72,7 +78,7 @@ import {InsertCountry} from '../../../api';
                       {/* card-body end .// */}
                       <div className="border-top card-body">
                         <button className="btn btn-success"onClick={handleClick} >Save</button>
-                        <button className="btn btn-light ml-3" onClick={()=>{window.location.href="./ShowState"}}>Cancel</button>
+                        <button className="btn btn-light ml-3" onClick={()=>{window.location.href="./ShowCountry"}}>Cancel</button>
                       </div>
                     </div>
                     {/* card.// */}
