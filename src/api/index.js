@@ -70,7 +70,7 @@ export const currency = async () => {
 }
 
 export const InsertCurrency = async (country_name, country_code, currency_name, currency_code ) => {
-    const url = `http://localhost:3008/api/insertcurrecy`
+    const url = `http://192.168.146.103:3008/api/insertcurrecy`
     return axios.post(url, {country_name, country_code, currency_name, currency_code}).then(response => response.data).catch(error => console.log(error));
 }
 

@@ -10,10 +10,11 @@ import * as XLSX from "xlsx";
     const array = JSON.stringify(data)
     const datas = JSON.parse(array)
     
+      console.log(datas);
     props.importdatas(datas)
 
     props.function()
-    // window.location.reload()
+    
   };
   const onChange = (e) => {
     const [file] = e.target.files;
@@ -48,7 +49,7 @@ import * as XLSX from "xlsx";
   };
     return (
       <div>
-                     <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div className="modal-dialog" role="document">
                 <div className="modal-content">
                   <div className="modal-header">

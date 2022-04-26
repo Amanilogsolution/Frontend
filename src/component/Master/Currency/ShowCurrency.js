@@ -5,11 +5,10 @@ import Footer from "../../Footer/Footer";
 import { currency } from '../../../api';
 import {ImportCurrency} from '../../../api'
 import DataTable from 'react-data-table-component';
-// import Excelfileform '../countires-codes-and-currencies.xlsx'
 import DataTableExtensions from 'react-data-table-component-extensions';
 import 'react-data-table-component-extensions/dist/index.css';
 import {deleteCurrency} from '../../../api';
-import Excelfile from '../../../tbl_countries.xlsx';
+import Excelfile from '../../../excelformate/tbl_currency.xlsx';
 // import Modal from '../Modal/modal'
 import * as XLSX from "xlsx";
 
@@ -37,7 +36,7 @@ const columns = [
     {
         name: 'Status',
        sortable: true,
-       selector: 'null',
+       selector: "null",
         cell: (row) => [
             <div className='droplist'>
             <select onChange={async(e) =>
@@ -50,8 +49,8 @@ const columns = [
                            <option selected disabled hidden> {row.status}</option>
      
              
-              <option value='Active'>Active</option>
-              <option value='DeActive' >DeActive</option>
+              <option>Active</option>
+              <option>DeActive</option>
             </select>
            </div>
         ]
@@ -59,7 +58,6 @@ const columns = [
     {
         name: "Actions",
         sortable: false,
-    
         selector: "null",
         cell: (row) => [
 
@@ -73,16 +71,18 @@ const columns = [
     const [data,setData] = useState([])
     const [importdata, setImportdata] = useState([]);
 
+    //##########################  for convert array to json start  #################################
+
     const handleClick = () => {
-      // const Jsondata = JSON.stringify(data)
       const array = JSON.stringify(importdata)
       const datas = JSON.parse(array)
       ImportCurrency(datas)
-      
       console.log(importdata)
-      // props.function()
-      // window.location.reload()
+      window.location.reload()
     };
+    //##########################  for convert array to json end  #################################
+
+    //##########################  for convert excel to array start  #################################
     const onChange = (e) => {
       const [file] = e.target.files;
       const reader = new FileReader();
@@ -91,46 +91,31 @@ const columns = [
         const bstr = evt.target.result;
         const wb = XLSX.read(bstr, { type: "binary" });
         const wsname = wb.SheetNames[0];
-        const ws = wb.Sheets[wsname]; // console.log(result);
+        const ws = wb.Sheets[wsname];
         const data = XLSX.utils.sheet_to_csv(ws, { header: 1 });
-        // console.log(data);
         var lines = data.split("\n");
-  
         var result = [];
-  
         var headers = lines[0].split(",");
-  
         for (var i = 1; i < lines.length-1; i++) {
           var obj = {};
           var currentline = lines[i].split(",");
-  
-          for (var j = 0; j < headers.length; j++) {
+          for (var j = 0; j < headers.length; j++) 
+          {
             obj[headers[j]] = currentline[j];
           }
           result.push(obj);
         }
         setImportdata(result);
-        // console.log(result);
       };
       reader.readAsBinaryString(file);
     };
+    //##########################  for convert excel to array end #################################
 
-    // if(importdata.length>0){
-    //   console.log("Hello Data Uploaded")
-    //   console.log(importdata)
-    //   ImportCurrency(importdata)
-    // }
 
      useEffect(async() => {
        const result = await currency()
        setData(result)
      }, [])
-
-    //  const Imported = async() => {
-    //    console.log('Done',importdata)
-    //   const result = await ImportCurrency(importdata)
-    //   console.log(result)
-    //  }
 
      const tableData  ={
         columns,data
@@ -155,7 +140,7 @@ const columns = [
                 <div className="row ">
                   <div className="col ml-5">
                     <div className="card" style={{ width: "100%" }}>
-                      <article className="card-body">
+                      <article className="card-body" >
                       <DataTableExtensions
       {...tableData}
     >
