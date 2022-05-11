@@ -142,7 +142,7 @@ import {UpdateUser} from '../../../api/index.js'
                           {/* form-group end.// */}
                         </div>
                         <div className="form-row">
-                          <label htmlFor="username" className="col-md-2 col-form-label font-weight-normal">Username</label>
+                          <label htmlFor="username" className="col-md-2 col-form-label font-weight-normal">User Id</label>
                           <div className="col form-group">
                             <input type="text" className="form-control col-md-4" id='username'  value={data.user_name} onChange={(e) => handleChangeusername(e)}/>
                           </div>
