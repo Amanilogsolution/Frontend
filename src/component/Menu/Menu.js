@@ -1,14 +1,14 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { UserLogout } from '../../api';
 
  const Menu = () =>  {
+  const currentorg = localStorage.getItem('Organisation Name');
+  const username= localStorage.getItem("User_name")
 
    const handleClick = async()=>{
-     const result = await UserLogout(localStorage.getItem('username'))
-     console.log(result)
+     const result = await UserLogout(localStorage.getItem('username'));
+    //  console.log(result)
      if(result.status == 'Logout'){
-      // localStorage.removeItem("username")
-      // localStorage.removeItem("Token")
       localStorage.clear()
        window.location.href='/'
      }
@@ -20,19 +20,19 @@ import { UserLogout } from '../../api';
   <aside className="main-sidebar sidebar-light-primary elevation-4">
     <a href="index3.html" className="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" className="brand-image img-circle elevation-3" style={{opacity: '.8'}} />
-      <span className="brand-text font-weight-light">Fins</span>
+      <span className="brand-text " style={{color:"red"}}>{currentorg}</span>
     </a>
 
     <div className="sidebar">
-      <div className="user-panel mt-3 pb-3 mb-3 d-flex">
+      {/* <div className="user-panel mt-3 pb-3 mb-3 d-flex">
         <div className="image">
           <img src="dist/img/user2-160x160.jpg" className="img-circle elevation-2" alt="User Image" />
         </div>
         <div className="info">
-          <a href="#" className="d-block">Aman Lohan</a>
+          <a href="#" className="d-block">{ username}</a>
         </div>
-      </div>
-      <div className="form-inline">
+      </div> */}
+      <div className="form-inline mt-3 pb-3 mb-3 d-flex">
         <div className="input-group" data-widget="sidebar-search">
           <input className="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search" />
           <div className="input-group-append">
@@ -52,7 +52,6 @@ import { UserLogout } from '../../api';
                 Dashboard
               </p>
             </a>
-         
           </li>
           <li className="nav-item">
             <a href="/Customer" className="nav-link active">
@@ -125,7 +124,7 @@ import { UserLogout } from '../../api';
           </li>
           <li className="nav-item">
             <a href="/Customer" className="nav-link active">
-              <i className="fa fa-shopping-bag" aria-hidden="true"></i>
+            <i class="fa fa-user-plus" aria-hidden="true"></i>
               <p >
               &nbsp;  Master 
                 <i className="right fas fa-angle-left" />
@@ -187,16 +186,25 @@ import { UserLogout } from '../../api';
                 </a>
               </li>
             </ul>
+            <ul className="nav nav-treeview">
+              <li className="nav-item">
+                <a href="/TotalLocation" className="nav-link active">
+                  <i className="far fa-circle nav-icon" />
+                  <p>Location</p>
+                </a>
+              </li>
+            </ul>
           </li>
+       
         
           <li className="nav-header"></li>
-          <li className="nav-item">
-            <a onClick={handleClick} className="nav-link">
+          {/* <li className="nav-item">
+            <a onClick={handleClick} style={{cursor:"pointer"}}className="nav-link active">
               <p>
                 Logout
               </p>
             </a>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </div>

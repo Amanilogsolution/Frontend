@@ -5,6 +5,7 @@ import {UserLogin} from '../../api'
 
 const Login = () => {
   const [passwordshow, setPasswordshow] = useState(false);
+  
   const handleClickToogle = (e) => {
     e.preventDefault()
     setPasswordshow(!passwordshow)
@@ -14,15 +15,21 @@ const Login = () => {
         e.preventDefault()
         const email = document.getElementById('email').value
         const password = document.getElementById('password').value
+        console.log(email,password)
         const result = await UserLogin(email,password)
-        console.log(result.token)
+        console.log(result)
         if(result.status=='Success'){
             localStorage.setItem('Token',result.token)
             localStorage.setItem('ExpiredIn',result.expiresIn)
+            console.log(result.result)
+            localStorage.setItem('Organisation',result.result)
+            localStorage.setItem('User_name',result.result2)
+            localStorage.setItem('Organisation Name',result.result3)
+
               window.location.href = '/home'
           }
           else{
-            alert(<span style={{color:'red'}}>{`Invalid Email & Password`}</span>)
+            alert("Invalid Email & Password")
         }
     }
 

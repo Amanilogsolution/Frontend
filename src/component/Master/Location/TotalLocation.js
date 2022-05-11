@@ -2,43 +2,36 @@ import React, { useEffect, useState } from 'react'
 import Header from "../../Header/Header";
 import Menu from "../../Menu/Menu";
 import Footer from "../../Footer/Footer";
-import { getstates } from '../../../api';
+import { totalLocation } from '../../../api';
 import DataTable from 'react-data-table-component';
 import DataTableExtensions from 'react-data-table-component-extensions';
 import 'react-data-table-component-extensions/dist/index.css';
-import { deletestate, ImportState } from '../../../api';
-import * as XLSX from "xlsx";
 import Excelfile from '../../../excelformate/tbl_currency.xlsx';
-
+import { deletecountry, ImportCountry, CheckimportCountry } from '../../../api';
+import * as XLSX from "xlsx";
 
 
 const columns = [
   {
-    name: 'Country Name',
-    selector: 'country_name',
+    name: 'Location Name',
+    selector: 'location_name',
     sortable: true
   },
   {
-    name: 'State Name',
-    selector: 'state_name',
+    name: 'GST Number',
+    selector: 'gstin_no',
     sortable: true
   },
-  {
-    name: 'State Code',
-    selector: 'state_code',
-    sortable: true
-  },
-  {
-    name: 'State Short Name',
-    selector: 'state_short_name',
-    sortable: true
-  },
-  {
-    name: 'Type',
-    selector: 'state_type',
-    sortable: true
-  },
-
+//   {
+//     name: 'Country Id',
+//     selector: 'country_id',
+//     sortable: true
+//   },
+//   {
+//     name: 'Country phone code',
+//     selector: 'country_phonecode',
+//     sortable: true
+//   },
   {
     name: 'Status',
     sortable: true,
@@ -47,8 +40,8 @@ const columns = [
       <div className='droplist'>
         <select onChange={async (e) => {
           const status = e.target.value;
-          await deletestate(row.sno, status)
-          window.location.href = 'ShowState'
+          await deletecountry(row.sno, status)
+          window.location.href = 'ShowCountry'
         }
         }>
           <option selected disabled hidden> {row.status}</option>
@@ -60,53 +53,43 @@ const columns = [
       </div>
     ]
   },
-  // {
-  //   name:'Active',
-  //   selector: 'null',
-  //   cell: (row) => [
-  //       <input type='checkbox' checked={row.status== 'Active'}  onClick={async(e) =>
-  //         {
-  //           if(row.status == 'Active'){
-  //             const checkvalue ='Deactive'
-  //             await deletestate(row.sno,checkvalue)
-  //                 window.location.href='ShowState'
-
-  //           }
-  //           else{
-  //             const checkvalue ='Active'
-  //             await deletestate(row.sno,checkvalue)
-  //                 window.location.href='ShowState'
-  //           }
-  //          }} />
-  //   ]
-  // },
+ 
   {
     name: "Actions",
     sortable: false,
-
     selector: "null",
     cell: (row) => [
 
-      <a title='View Document' href="EditState">
-        <button className="editbtn btn-success " onClick={() => localStorage.setItem('stateSno', `${row.sno}`)} >Edit</button></a>
-
+      <a title='View Document' href="EditLocation">
+        <button className="editbtn btn-success "
+         onClick={() => localStorage.setItem('location_id', `${row.location_id}`)}
+          >Edit</button></a>,
+        <a title='View Document' href="AddOrgAddress">
+        <button className="editbtn btn-success ml-2"
+        onClick={() => localStorage.setItem('location_id', `${row.location_id}`)}
+         >Add Address</button></a>,
+         <a title='View Document' href="EditOrgAddress">
+         <button className="editbtn btn-success ml-2"
+          onClick={() => localStorage.setItem('location_id', `${row.location_id}`)}
+           >Edit Address</button></a>,
     ]
   }
-];
+]
 
 
-const ShowState = () => {
+const TotalLocation = () => {
   const [data, setData] = useState([])
   const [importdata, setImportdata] = useState([]);
   let [errorno, setErrorno] = useState(0);
   const [duplicateData, setDuplicateDate] = useState([])
   const [backenddata, setBackenddata] = useState(false);
 
+
   //##########################  Upload data start  #################################
 
   const uploaddata = async () => {
     importdata.map((d) => {
-      if (!d.country_name || !d.state_name || !d.state_code || !d.state_short_name || !d.state_type) {
+      if (!d.country_code || !d.country_id || !d.country_name || !d.country_phonecode) {
         setErrorno(errorno++);
       }
     })
@@ -117,22 +100,20 @@ const ShowState = () => {
       window.location.reload()
     }
     else {
-      const result = await ImportState(importdata);
-      console.log(result.length)
+      const result = await CheckimportCountry(importdata);
+      // console.log(result.length)
       if (!(result == "Data Added")) {
         setBackenddata(true);
         setDuplicateDate(result)
+
       }
       else if (result == "Data Added") {
         setBackenddata(false);
         document.getElementById("showdataModal").style.display = "none";
         alert("Data Added")
-        window.location.href = './ShowState'
+        window.location.reload()
       }
 
-      // ImportState(importdata);
-      // document.getElementById("showdataModal").style.display="none";
-      // window.location.reload()
     }
 
   };
@@ -140,10 +121,10 @@ const ShowState = () => {
 
   //##########################  for convert array to json start  #################################
 
-  const datatojson = () => {
+  const handleClick = () => {
     const array = JSON.stringify(importdata)
     const datas = JSON.parse(array)
-    console.log(datas)
+    //  console.log(datas)
     setImportdata(datas);
 
   };
@@ -171,30 +152,25 @@ const ShowState = () => {
         }
         result.push(obj);
       }
-      console.log("excel", result)
       setImportdata(result);
     };
     reader.readAsBinaryString(file);
   };
   //##########################  for convert excel to array end #################################
-
-
   useEffect(async () => {
-    const result = await getstates();
+    const result = await totalLocation(localStorage.getItem('Organisation'))
+    console.log(result)
     setData(result)
   }, [])
-
-  const handleClick = (e) => {
-    e.preventDefault()
-  }
 
   const tableData = {
     columns, data
   };
 
-
   return (
+
     <div>
+
       <div className="wrapper">
         <div className="preloader flex-column justify-content-center align-items-center">
           <div className="spinner-border" role="status"> </div>
@@ -203,19 +179,20 @@ const ShowState = () => {
         <Menu />
         <div>
           <div className="content-wrapper">
-            <button type="button" style={{ float: "right", marginRight: '10%', marginTop: '3%' }} onClick={() => { window.location.href = "./StateMaster" }} className="btn btn-primary">Add State</button>
-            <button type="button" style={{ float: "right", marginRight: '2%', marginTop: '3%' }} className="btn btn-success" data-toggle="modal" data-target="#exampleModal">Import excel file</button>
-
+            <button type="button" style={{ float: "right", marginRight: '10%', marginTop: '1%' }} onClick={() => { window.location.href = "./AddLocation" }} className="btn btn-primary">Add Location</button>
+            <button type="button" style={{ float: "right", marginRight: '2%', marginTop: '1%' }} className="btn btn-success" data-toggle="modal" data-target="#exampleModal">Import excel file</button>
             <div className="container-fluid">
               <br />
-              <h3 className="text-left ml-5">State</h3>
+              <h3 className="text-left ml-5">Location</h3>
               <br />
               <div className="row ">
                 <div className="col ml-5">
                   <div className="card" style={{ width: "100%" }}>
                     <article className="card-body">
+
                       <DataTableExtensions
-                        {...tableData} >
+                        {...tableData}
+                      >
                         <DataTable
                           noHeader
                           defaultSortField="id"
@@ -224,13 +201,19 @@ const ShowState = () => {
                           highlightOnHover
                         />
                       </DataTableExtensions>
+
                     </article>
+
                   </div>
+                  {/* card.// */}
                 </div>
+                {/* col.//*/}
               </div>
+              {/* row.//*/}
             </div>
           </div>
         </div>
+        <Footer />
         {/* ------------------ Modal start -----------------------------*/}\
         {/* <Modal excel={Excelfile} importdatas={setImportdata} /> */}
         <div
@@ -239,7 +222,8 @@ const ShowState = () => {
           tabindex="-1"
           role="dialog"
           aria-labelledby="exampleModalLabel"
-          aria-hidden="true">
+          aria-hidden="true"
+        >
           <div className="modal-dialog" role="document">
             <div className="modal-content">
               <div className="modal-header">
@@ -286,7 +270,7 @@ const ShowState = () => {
                   Close
                 </button>
                 <button type="button"
-                  onClick={datatojson}
+                  onClick={handleClick}
                   className="btn btn-primary"
                   data-dismiss="modal"
                   data-toggle="modal"
@@ -334,22 +318,22 @@ const ShowState = () => {
                   backenddata ?
                     <>
                       <h5>This data already exist</h5>
-                      <table style={{ color: "red", margin: "auto" }}>
+                      <table style={{ color: "red" }}>
                         <thead>
-                          {/* <th style={{ border: "1px solid black" }}>country_name</th> */}
-                          <th style={{ border: "1px solid black" }}>state_name</th>
-                          <th style={{ border: "1px solid black" }}>state_code</th>
-                          <th style={{ border: "1px solid black" }}>state_short_name</th>
+                          <th style={{ border: "1px solid black" }}>country_code</th>
+                          <th style={{ border: "1px solid black" }}>country_id</th>
+                          <th style={{ border: "1px solid black" }}>country_name</th>
+                          <th style={{ border: "1px solid black" }}>country_phonecode</th>
                         </thead>
                         <tbody>
                           {
                             duplicateData.map((d) => (
 
                               <tr style={{ border: "1px solid black" }}>
-                                {/* <td style={{ border: "1px solid black" }}>{d.country_name}</td> */}
-                                <td style={{ border: "1px solid black", textAlign: "center" }}>{d.state_name}</td>
-                                <td style={{ border: "1px solid black", textAlign: "center" }}>{d.state_code}</td>
-                                <td style={{ border: "1px solid black", textAlign: "center" }}>{d.state_short_name}</td>
+                                <td style={{ border: "1px solid black" }}>{d.country_code}</td>
+                                <td style={{ border: "1px solid black" }}>{d.country_id}</td>
+                                <td style={{ border: "1px solid black" }}>{d.country_name}</td>
+                                <td style={{ border: "1px solid black" }}>{d.country_phonecode}</td>
                               </tr>
                             ))
                           }
@@ -363,22 +347,19 @@ const ShowState = () => {
 
                 <table >
                   <thead>
+                    <th style={{ border: "1px solid black" }}>country_code</th>
+                    <th style={{ border: "1px solid black" }}>country_id</th>
                     <th style={{ border: "1px solid black" }}>country_name</th>
-                    <th style={{ border: "1px solid black" }}>state_name</th>
-                    <th style={{ border: "1px solid black" }}>state_code</th>
-                    <th style={{ border: "1px solid black" }}>state_short_name</th>
-
-
+                    <th style={{ border: "1px solid black" }}>country_phonecode</th>
                   </thead>
                   <tbody>
                     {
                       importdata.map((d) => (
                         <tr style={{ border: "1px solid black" }}>
+                          <td style={{ border: "1px solid black" }}>{d.country_code}</td>
+                          <td style={{ border: "1px solid black" }}>{d.country_id}</td>
                           <td style={{ border: "1px solid black" }}>{d.country_name}</td>
-                          <td style={{ border: "1px solid black" }}>{d.state_name}</td>
-                          <td style={{ border: "1px solid black" }}>{d.state_code}</td>
-                          <td style={{ border: "1px solid black" }}>{d.state_short_name}</td>
-
+                          <td style={{ border: "1px solid black" }}>{d.country_phonecode}</td>
                         </tr>
                       ))
                     }</tbody>
@@ -386,7 +367,6 @@ const ShowState = () => {
                 </table>
               </div>
             </div>
-            {/* </div> */}
             <div className="modal-footer" style={{ background: "white" }}>
               <button
                 type="button"
@@ -408,10 +388,10 @@ const ShowState = () => {
           </div>
         </div>
         {/* ------------------ Modal end -----------------------------*/}
-        <Footer />
       </div>
     </div>
   )
 }
 
-export default ShowState
+export default TotalLocation
+
