@@ -14,7 +14,7 @@ const Vendor = () => {
   const [showMaster, setShowMaster] = useState(true);
   const [gsttreatment, setGsttreatment] = useState('');
   const [showMasterdropdown, setShowMasterdropdown] = useState(false);
-  const [getsn, setGetsn] = useState();
+  const [getsn, setGetsn] = useState('Mr.');
   const [source, setSource] = useState();
   const [paymtermval, setPaymtermval] = useState();
   const [tdsvalue, setTdsvalue] = useState();
@@ -255,8 +255,8 @@ const Vendor = () => {
                           </label>
                           <div className=" form-group">
                             <select id="inputSn" className="form-control" onChange={setsn}>
-                              <option selected> Salutation</option>
-                              <option>Mr.</option>
+                              <option selected hidden defaultValue> Salutation</option>
+                              <option defaultValue>Mr.</option>
                               <option>Mrs.</option>
                               <option>Ms.</option>
                               <option>Miss.</option>
@@ -673,7 +673,7 @@ const Vendor = () => {
                                 </select>
                               </div>
 
-                              <div className=" form-group">
+                              {/* <div className=" form-group">
                                 <button
                                   type="button"
                                   className="btn btn-primary "
@@ -682,7 +682,7 @@ const Vendor = () => {
                                 >
                                   Add Currency
                                 </button>
-                              </div>
+                              </div> */}
                               {/* form-group end.// */}
                             </div>
 
