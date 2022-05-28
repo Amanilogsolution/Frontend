@@ -64,7 +64,7 @@ import {UpdateUser} from '../../../api/index.js'
           setData({...data,warehouse:e.target.value})  
         }
         const handleChangeusername = (e) => {
-            setData({...data,user_name:e.target.value})
+            setData({...data,user_id:e.target.value})
         }
 
         const handleChangepassword = (e) => {
@@ -144,7 +144,7 @@ import {UpdateUser} from '../../../api/index.js'
                         <div className="form-row">
                           <label htmlFor="username" className="col-md-2 col-form-label font-weight-normal">User Id</label>
                           <div className="col form-group">
-                            <input type="text" className="form-control col-md-4" id='username'  value={data.user_name} onChange={(e) => handleChangeusername(e)}/>
+                            <input type="text" className="form-control col-md-4" id='username' disabled value={data.user_id} onChange={(e) => handleChangeusername(e)}/>
                           </div>
                           {/* form-group end.// */}
                         </div>
@@ -166,7 +166,7 @@ import {UpdateUser} from '../../../api/index.js'
                         <div className="form-row">
                           <label htmlFor="phone" className="col-md-2 col-form-label font-weight-normal">Phone</label>
                           <div className="col form-group">
-                            <input type="number" className="form-control col-md-4" id='phone'  value={data.phone} onChange={(e) => handleChangephone(e)}/>
+                            <input type="tel" className="form-control col-md-4" id='phone'  value={data.phone} onChange={(e) => handleChangephone(e)} maxLength={10}/>
                           </div>
                           {/* form-group end.// */}
                         </div>

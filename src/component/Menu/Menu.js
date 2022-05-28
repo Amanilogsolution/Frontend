@@ -18,7 +18,7 @@ import { UserLogout } from '../../api';
     return (
    <div>
   <aside className="main-sidebar sidebar-light-primary elevation-4">
-    <a href="index3.html" className="brand-link">
+    <a href="/home" className="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" className="brand-image img-circle elevation-3" style={{opacity: '.8'}} />
       <span className="brand-text " style={{color:"red"}}>{currentorg}</span>
     </a>
@@ -191,6 +191,22 @@ import { UserLogout } from '../../api';
                 <a href="/TotalLocation" className="nav-link active">
                   <i className="far fa-circle nav-icon" />
                   <p>Location</p>
+                </a>
+              </li>
+            </ul>
+            <ul className="nav nav-treeview">
+              <li className="nav-item">
+                <a href="/Showcompliances" className="nav-link active">
+                  <i className="far fa-circle nav-icon" />
+                  <p>Compliences</p>
+                </a>
+              </li>
+            </ul>
+            <ul className="nav nav-treeview">
+              <li className="nav-item">
+                <a href="/ShowcompliancesType" className="nav-link active">
+                  <i className="far fa-circle nav-icon" />
+                  <p>Complience Type</p>
                 </a>
               </li>
             </ul>

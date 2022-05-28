@@ -43,7 +43,7 @@ const AddUser = () => {
     const result = await User(employee_name, role, warehouse, user_name,
       password, email_id, phone, operate_mode, customer, reporting_to, designation, authentication,user_profile_url);
 
-     const loginInsert = await insertUserLogin(user_name,employee_name,warehouse,localStorage.getItem('Organisation Name'),password,localStorage.getItem('Organisation'))
+     const loginInsert = await insertUserLogin(user_name,employee_name,warehouse,localStorage.getItem('Organisation Name'),password,localStorage.getItem('Organisation'),user_profile_url)
     if (result) {
       window.location.href = '/ShowUser'
     }
@@ -112,7 +112,7 @@ const AddUser = () => {
                         <div className="form-row">
                           <label htmlFor="phone" className="col-md-2 col-form-label font-weight-normal">Phone no.</label>
                           <div className="col form-group">
-                            <input type="number" className="form-control col-md-4" id='phone' placeholder="phone" />
+                            <input type="tel" className="form-control col-md-4" id='phone' placeholder="phone" maxLength={10}/>
                           </div>
                           {/* form-group end.// */}
                         </div>
@@ -149,7 +149,7 @@ const AddUser = () => {
                         <div className="form-row">
                           <label htmlFor="user_name" className="col-md-2 col-form-label font-weight-normal">User Id</label>
                           <div className="col form-group">
-                            <input type="text" className="form-control col-md-4" id='user_name' placeholder="user name" />
+                            <input type="text" className="form-control col-md-4" id='user_name' placeholder="User ID" />
                           </div>
                           {/* form-group end.// */}
                         </div>
