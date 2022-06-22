@@ -1,10 +1,10 @@
 import "./org.css";
 import { useState } from "react";
-import { register, CreatenewDb, CreateOrgTable,UploadData } from "../../api/index";
+import { register, CreatenewDb, CreateOrgTable, UploadData } from "../../api/index";
 
 function Org() {
   const [gstbox, setgstbox] = useState(false);
-  const [file,setFile] = useState('')
+  const [file, setFile] = useState('')
 
 
   const formshow = () => {
@@ -41,14 +41,13 @@ function Org() {
     setgstbox(!gstbox);
   };
 
-  const handleSendFile =async(e)=>{
+  const handleSendFile = async (e) => {
     e.preventDefault()
     const data = new FormData();
-    data.append("images",file)
-   const UploadLink = await UploadData(data)
-   console.log(UploadLink)
-  //  setUserProfile(UploadLink)
-}
+    data.append("images", file)
+    const UploadLink = await UploadData(data)
+    console.log(UploadLink)
+  }
 
   return (
     <>
@@ -96,7 +95,7 @@ function Org() {
                         <span style={{ color: "red" }}>*</span>
                       </label>
                       <select id="inputState" className="form-control">
-                        <option defaultValue hidden>Selecte State/Union Territory</option>
+                        <option selected hidden>Selecte State/Union Territory</option>
                         <option>Andhra Pradesh</option>
                         <option>Arunachal Pradesh</option>
                         <option>Assam</option>
@@ -200,21 +199,21 @@ function Org() {
                           id="org_pin"
                         />
                       </div>
-                     
+
                     </div>
                     <div className="form-row">
-                        <label className="col-sm-4 col-form-label">
-                          Orgaisation logo (optional) :-
-                        </label>
-                        {/* <input
+                      <label className="col-sm-4 col-form-label">
+                        Orgaisation logo (optional) :-
+                      </label>
+                      {/* <input
                           type="file"
                           className=""
                           placeholder=""
                           accept=".jpg, .jpeg, .png"
                         /> */}
-                        <button className=" form-control col-md-3 btn btn-outline-secondary" data-toggle="modal" data-target="#exampleModal">Select</button>
+                      <button className=" form-control col-md-3 btn btn-outline-secondary" data-toggle="modal" data-target="#exampleModal">Select</button>
 
-                      </div>
+                    </div>
                   </div>
                   <p className="regtext">REGIONAL SETTINGS</p>
                   <div className="form-row">
@@ -297,32 +296,34 @@ function Org() {
           </div>
         </div>
         {/* Modal */}
-<div className="modal fade" id="exampleModal" tabIndex={-1} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div className="modal-dialog" role="document">
-    <div className="modal-content">
-      <div className="modal-header">
-        <h5 className="modal-title" id="exampleModalLabel">Upload Orgaisation logo</h5>
-        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div className="modal-body">
-      <div className="form-row">
-                        <label className="col-sm-4 col-form-label">
-                          Orgaisation logo 
-                        </label>
-                        <input type="file" className="" placeholder=""onChange={event=>{ const document = event.target.files[0];
-                                                                                                            setFile(document)}}   accept=".jpg, .jpeg, .png,.svg"/>
+        <div className="modal fade" id="exampleModal" tabIndex={-1} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">Upload Orgaisation logo</h5>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <div className="form-row">
+                  <label className="col-sm-4 col-form-label">
+                    Orgaisation logo
+                  </label>
+                  <input type="file" className="" placeholder="" onChange={event => {
+                    const document = event.target.files[0];
+                    setFile(document)
+                  }} accept=".jpg, .jpeg, .png,.svg" />
 
-                      </div>
-      </div>
-      <div className="modal-footer">
-        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" onClick={handleSendFile} className="btn btn-primary">Upload</button>
-      </div>
-    </div>
-  </div>
-</div>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" onClick={handleSendFile} className="btn btn-primary">Upload</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
       </div>
     </>

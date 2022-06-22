@@ -57,13 +57,35 @@ import EditOrgAddress from './component/Master/Location/Address/EditOrgAddress';
 import Addcompliances from './component/Master/Compliances/Addcompliances';
 import Showcompliances from './component/Master/Compliances/Showcompliances';
 import Editcompliances from './component/Master/Compliances/Editcompliances';
+import UploadComplianceDocument from './component/Master/Compliances/UploadComplianceDocumnet/UploadComplianceDocument'
+
 import ShowcompliancesType from './component/Master/Compliances/ComplienceType/ShowcomplianceType'
 import AddcomplianceType from './component/Master/Compliances/ComplienceType/AddcomplianceType'
 import EditComplianceType from './component/Master/Compliances/ComplienceType/EditComplianceType'
+import PandingCompliances from './component/Master/Compliances/Pendingcompliances'
+
+
 
 import Fincialyear from './component/Master/fincialyear/fincialyear'
 import ShowFincialyear from './component/Master/fincialyear/Showfincialyear'
 
+import ChartOfAccount from './component/ChartOfAccount/ChartOfAccount';
+import InsertAccountType from './component/ChartOfAccount/InsertAccountType';
+import ShowAccountname from './component/Master/AccountNameMaster/ShowAccountname';
+import EditAccountname from './component/Master/AccountNameMaster/EditAccountname';
+
+import Items from './component/Items/Items';
+
+import ShowAccountInfo from './component/Master/AccountInfo/ShowAccountInfo';
+import AddAccountInfo from './component/Master/AccountInfo/AddAccountInfo';
+import EditAccountInfo from './component/Master/AccountInfo/EditAccountInfo';
+
+import RecursionExpenses from './component/Vendor/RecursionExpenses/RecursionExpenses';
+
+import AddSubCode from './component/Master/SubCode/AddSubCode';
+import TotalSubCode from './component/Master/SubCode/TotalSubCode';
+import EditSubCode from './component/Master/SubCode/EditSubCode';
+import Estimates from './component/Estimates/Estimates';
 
 import PageNotFound from './component/pagenotfound/pagenotfound';
 
@@ -135,10 +157,13 @@ import PageNotFound from './component/pagenotfound/pagenotfound';
           <Route exact path="/Addcompliances" component={Addcompliances}/>
           <Route exact path="/Showcompliances" component={Showcompliances}/>
           <Route exact path="/Editcompliances" component={Editcompliances}/>
+          <Route exact path="/UploadComplianceDocument" component={UploadComplianceDocument}/>
+
 
           <Route exact path="/ShowcompliancesType" component={ShowcompliancesType}/>
           <Route exact path="/AddcomplianceType" component={AddcomplianceType}/>
           <Route exact path="/EditComplianceType" component={EditComplianceType}/>
+          <Route exact path="/Panding-Compliances" component={PandingCompliances}/>
 
           
 
@@ -147,7 +172,23 @@ import PageNotFound from './component/pagenotfound/pagenotfound';
 
           <Route exact path="/Fincialyear" component={Fincialyear}/>
           <Route exact path="/ShowFincialyear" component={ShowFincialyear}/>
-          
+
+          <Route exact path="/ChartOfAccount" component={ChartOfAccount}/>
+          <Route exact path="/InsertAccountType" component={InsertAccountType}/>
+          <Route exact path="/ShowAccountname" component={ShowAccountname}/>
+          <Route exact path="/EditAccountname" component={EditAccountname}/>
+          <Route exact path="/Items" component={Items}/>
+
+          <Route exact path="/ShowAccountInfo" component={ShowAccountInfo}/>
+          <Route exact path="/AddAccountInfo" component={AddAccountInfo}/>
+          <Route exact path="/EditAccountInfo" component={EditAccountInfo}/>
+
+          <Route exact path="/RecursionExpenses" component={RecursionExpenses}/>
+          <Route exact path="/AddSubCode" component={AddSubCode}/>
+          <Route exact path="/TotalSubCode" component={TotalSubCode}/>
+          <Route exact path="/EditSubCode" component={EditSubCode}/>
+
+          <Route exact path="/Estimates" component={Estimates}/>
           
           <Route exact path="*" component={PageNotFound}/>
           </Switch>

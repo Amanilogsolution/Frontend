@@ -2,9 +2,8 @@ import React,{useState,useEffect} from 'react'
 import Header from "../../Header/Header";
 import Menu from "../../Menu/Menu";
 import Footer from "../../Footer/Footer";
-import {InsertCity} from '../../../api';
-import { Totalcountry } from '../../../api';
-import { showstateCity } from '../../../api';
+import {InsertCity,Activecountries} from '../../../api';
+import { showactivestate } from '../../../api';
 
  const Addcity =() => {
   const [selectCountry,setSelectCountry] = useState([]);
@@ -14,14 +13,12 @@ import { showstateCity } from '../../../api';
 
   useEffect(async() => {
 
-    const result = await Totalcountry()
-    console.log(result)
+    const result = await Activecountries()
     setSelectCountry(result)
  }, [])
      const handleClick = async () => {
          const city_id = document.getElementById('city_id').value;
             const city_name = document.getElementById('city_name').value;
-            console.log(city_id,city_name,selectedState,selectedCountry)
             if(!city_id||!city_name){
               alert('Enter data')
             }else{
@@ -36,16 +33,13 @@ import { showstateCity } from '../../../api';
     }
     const handleChangeCountry = async(e) => {
       let data = e.target.value
-      console.log(data)
       setSelectedCountry(data)
 
-      const statesresult = await showstateCity(data)
-      console.log(statesresult)
+      const statesresult = await showactivestate(data)
       setSelectState(statesresult)
   }
   const handleChangeState = async(e) => {
     let data = e.target.value
-    console.log(data)
     setSelectedState(data)
   }
 
@@ -74,10 +68,10 @@ import { showstateCity } from '../../../api';
                               className="form-control col-md-4"
                               onChange={handleChangeCountry}
                             >
-                              <option selected default hidden value="India">Choose Country</option>
+                              <option selected hidden value="India">Choose Country</option>
                               {
-                                selectCountry.map((data) => (
-                                    <option value={data.country_name}>{data.country_name}</option>
+                                selectCountry.map((data,index) => (
+                                    <option  key={index} value={data.country_name}>{data.country_name}</option>
                                 ))
                                 
                               }
@@ -89,7 +83,7 @@ import { showstateCity } from '../../../api';
                           <div className="form-row">
                             <label htmlFor="user_name" className="col-md-2 col-form-label font-weight-normal">Country Id</label>
                             <div className="col form-group">
-                              <input type="number" className="form-control col-md-4" id='country_id' placeholder />
+                              <input type="number" className="form-control col-md-4" id='country_id' />
                             </div>
                             {/* form-group end.// */}
                           </div>
@@ -103,10 +97,10 @@ import { showstateCity } from '../../../api';
                               onChange={handleChangeState}
                             
                             >
-                              <option selected default hidden >Choose State</option>
+                              <option selected hidden >Choose State</option>
                               {
-                                selectState.map((data) => (
-                                    <option value={data.state_name}>{data.state_name}</option>
+                                selectState.map((data,index) => (
+                                    <option  key={index} value={data.state_name}>{data.state_name}</option>
                                 ))
                                 
                               }
@@ -118,7 +112,7 @@ import { showstateCity } from '../../../api';
                           <div className="form-row">
                             <label htmlFor="user_name" className="col-md-2 col-form-label font-weight-normal">State Id</label>
                             <div className="col form-group">
-                              <input type="number" className="form-control col-md-4" id='state_id' placeholder />
+                              <input type="number" className="form-control col-md-4" id='state_id'  />
                             </div>
                             {/* form-group end.// */}
                           </div>
@@ -126,7 +120,7 @@ import { showstateCity } from '../../../api';
                           <div className="form-row">
                             <label htmlFor="user_name" className="col-md-2 col-form-label font-weight-normal">City Id</label>
                             <div className="col form-group">
-                              <input type="number" className="form-control col-md-4" id='city_id' placeholder />
+                              <input type="number" className="form-control col-md-4" id='city_id'  />
                             </div>
                             {/* form-group end.// */}
                           </div>
@@ -134,15 +128,10 @@ import { showstateCity } from '../../../api';
                           <div className="form-row">
                             <label htmlFor="user_name" className="col-md-2 col-form-label font-weight-normal">City Name</label>
                             <div className="col form-group">
-                              <input type="text" className="form-control col-md-4" id='city_name'  placeholder />
+                              <input type="text" className="form-control col-md-4" id='city_name'  />
                             </div>
                             {/* form-group end.// */}
                           </div>
-  
-                          
-  
-                          
-                       
   
                        
                         </form>

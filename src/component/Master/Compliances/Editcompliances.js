@@ -28,7 +28,6 @@ function Editcompliances() {
         const from_applicable = document.getElementById('from_applicable').value;
         const due_date = document.getElementById('due_date').value;
         const extended_date = document.getElementById('extended_date').value;
-        console.log(compliance_type, nature, period, period_name, from_month, to_month, from_applicable, due_date, extended_date)
 
         const result= await updatecompliance(localStorage.getItem('Organisation'),compliance_type, nature, period, period_name, from_month, to_month, from_applicable, due_date, extended_date,localStorage.getItem('ComplianceSno'),localStorage.getItem('User_name'))
         if (result){
@@ -90,7 +89,7 @@ function Editcompliances() {
                                                             id="compliancetype"
                                                             className="form-control col-md-4"
                                                         >
-                                                            <option defaultValue default hidden >{data.compliance_type}</option>
+                                                            <option selected default hidden >{data.compliance_type}</option>
                                                             {compliancetype.map((res)=>(
                                                             <option value={res.compliance_type} >{res.compliance_type}</option>
 

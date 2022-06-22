@@ -3,8 +3,7 @@ import Header from "../../Header/Header";
 import Menu from "../../Menu/Menu";
 import Footer from "../../Footer/Footer";
 import {showstate} from '../../../api/index.js'
-import {updateState} from '../../../api/index.js'
-import { Totalcountry } from '../../../api';
+import {updateState,Activecountries} from '../../../api/index.js'
 
  const EditState = () => {
      const [data,setData] = useState({})
@@ -12,17 +11,15 @@ import { Totalcountry } from '../../../api';
      const [selectCountry,setSelectCountry] = useState([]);
      const [selectedCountry,setSelectedCountry] = useState();
      useEffect(async() => {
+       
          const result = await showstate(localStorage.getItem('stateSno'));
          if(result == 401){
-           console.log('hi')
          }
          setData(result)
          var name = result.country_name
-         console.log(name)
         //  setSelectCountry(result.country_name)
 
-         const country= await Totalcountry()
-         console.log(country)
+         const country= await Activecountries()
          setSelectCountry(country)
          
 
@@ -46,7 +43,6 @@ import { Totalcountry } from '../../../api';
             const state_short_name = document.getElementById('State_short').value;
            
              if(selectedCountry == undefined){
-               console.log(data.country_name)
             const result = await updateState(localStorage.getItem('stateSno'),data.country_name,state_name,state_code,state_short_name,statetype);
             if(result){
                 window.location.href = '/ShowState'
@@ -146,7 +142,7 @@ import { Totalcountry } from '../../../api';
                         <div className="form-row" onChange={handleChange}>
                               <div className="col form-group">
                                 <label
-                                  htmlfor="user_name"
+                                  htmlFor="user_name"
                                   className="col-md-2 col-form-label font-weight-normal"
                                 >
                                     Select Type 

@@ -41,15 +41,15 @@ const columns = [
       <div className='droplist'>
         <select onChange={async (e) => {
           const status = e.target.value;
-          await deleteCurrency(row.sno, status)
+          await deleteCurrency(row.sno, status,localStorage.getItem("Organisation"))
           window.location.href = 'ShowCurrency'
         }
         }>
-          <option selected disabled hidden defaultValue={row.status}> {row.status}</option>
+          <option  disabled hidden selected value={row.status}> {row.status}</option>
 
 
           <option>Active</option>
-          <option>DeActive</option>
+          <option>Deactive</option>
         </select>
       </div>
     ]
@@ -69,7 +69,7 @@ const columns = [
 const ShowCurrency = () => {
   const [data, setData] = useState([])
   const [importdata, setImportdata] = useState([]);
-  let [errorno,setErrorno] = useState(0);
+  let [errorno, setErrorno] = useState(0);
   const [duplicateData, setDuplicateDate] = useState([])
   const [backenddata, setBackenddata] = useState(false);
 
@@ -79,21 +79,18 @@ const ShowCurrency = () => {
   const uploaddata = async () => {
     document.getElementById("uploadbtn").disabled = true;
     importdata.map((d) => {
-      console.log(d.cust_type)
-     if(!d.country_code || !d.country_name || !d.currency_code || !d.currency_name ){
-       setErrorno(errorno ++);
-     }
-    }) 
+      if (!d.country_name || !d.currency_code || !d.currency_name) {
+        setErrorno(errorno++);
+      }
+    })
 
-    if(errorno > 0){
+    if (errorno > 0) {
       alert("Please! fill the mandatory data");
-      document.getElementById("showdataModal").style.display="none";
+      document.getElementById("showdataModal").style.display = "none";
       window.location.reload()
     }
-    else
-    {
-      const result = await ImportCurrency(importdata);
-      console.log(result.length)
+    else {
+      const result = await ImportCurrency(importdata,localStorage.getItem("Organisation"),localStorage.getItem("User_id"));
       if (!(result == "Data Added")) {
         setBackenddata(true);
         setDuplicateDate(result)
@@ -102,21 +99,21 @@ const ShowCurrency = () => {
         setBackenddata(false);
         document.getElementById("showdataModal").style.display = "none";
         alert("Data Added")
-        window.location.href = 'ShowCountry'
+        window.location.href = 'ShowCurrency'
       }
     }
-  
-};
-//##########################   Upload data end  #################################
 
-//##########################  for convert array to json start  #################################
+  };
+  //##########################   Upload data end  #################################
+
+  //##########################  for convert array to json start  #################################
 
   const handleClick = () => {
     const array = JSON.stringify(importdata)
     const datas = JSON.parse(array)
     // console.log(datas)
     setImportdata(datas);
-    
+
   };
   //##########################  for convert array to json end  #################################
 
@@ -149,16 +146,14 @@ const ShowCurrency = () => {
   //##########################  for convert excel to array end #################################
 
 
-  useEffect(async () => {
-    const result = await currency(localStorage.getItem('Organisation'))
-    console.log(result)
+  useEffect( () => {
+    const  fetchdata=async()=>{
+      const result = await currency(localStorage.getItem('Organisation'))
     setData(result)
-    // if(result == 'UnAuthorized'){
-    //   alert('Un Authorized')
-    //   window.location.href = '/home'
-    // }else{
-    //      setData(result)
-    // }
+    }
+    fetchdata();
+    
+
   }, [])
 
   const tableData = {
@@ -173,7 +168,7 @@ const ShowCurrency = () => {
         </div>
         <Header />
         <Menu />
-        <div> 
+        <div>
           <div className="content-wrapper">
             <button type="button" style={{ float: "right", marginRight: '10%', marginTop: '1%' }} onClick={() => { window.location.href = "./AddCurrency" }} className="btn btn-primary">Add Currency</button>
             <button type="button" style={{ float: "right", marginRight: '2%', marginTop: '1%' }} className="btn btn-success" data-toggle="modal" data-target="#exampleModal">Import excel file</button>
@@ -215,7 +210,7 @@ const ShowCurrency = () => {
         <div
           className="modal fade"
           id="exampleModal"
-          tabindex="-1"
+          tabIndex="-1"
           role="dialog"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
@@ -265,10 +260,10 @@ const ShowCurrency = () => {
                 >
                   Close
                 </button>
-                <button type="button" onClick={handleClick} className="btn btn-primary"  
-                 data-dismiss="modal"
-                 data-toggle="modal"
-                 data-target=".bd-example-modal-lg">
+                <button type="button" onClick={handleClick} className="btn btn-primary"
+                  data-dismiss="modal"
+                  data-toggle="modal"
+                  data-target=".bd-example-modal-lg">
                   Upload
                 </button>
               </div>
@@ -277,16 +272,16 @@ const ShowCurrency = () => {
         </div>
         {/* ------------------ Modal end -----------------------------*/}
         {/* ------------------ Data show Modal start -----------------------------*/}
-        <div class="modal fade bd-example-modal-lg "
+        <div className="modal fade bd-example-modal-lg "
           id="showdataModal"
-          tabindex="-1"
+          tabIndex="-1"
           role="dialog"
           aria-labelledby="myLargeModalLabel"
           aria-hidden="true"
         >
 
-          <div class="" style={{ height: "550px", width: "50%", overflow: "auto", margin: "auto" }}>
-            <div class="modal-content">
+          <div className="" style={{ height: "550px", width: "50%", overflow: "auto", margin: "auto" }}>
+            <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="exampleModalLabel" style={{ color: "red" }}>
                   Uploaded Excel file
@@ -306,45 +301,48 @@ const ShowCurrency = () => {
                 </button>
               </div>
               {/* <div className="modal-body"> */}
-              <div className="" style={{ margin: "auto", paddingBottom:"20px",overflow: "auto" }}>
-              {
+              <div className="" style={{ margin: "auto", paddingBottom: "20px", overflow: "auto" }}>
+                {
 
-backenddata ?
-  <>
-    <h5>This data already exist</h5>
-    <table style={{ color: "red" }}>
-      <thead>
-        <th style={{ border: "1px solid black" }}>country_code</th>
-        <th style={{ border: "1px solid black" }}>country_id</th>
-        <th style={{ border: "1px solid black" }}>country_name</th>
-        <th style={{ border: "1px solid black" }}>country_phonecode</th>
-      </thead>
-      <tbody>
-        {
-          duplicateData.map((d) => (
+                  backenddata ?
+                    <>
+                      <h5>This data already exist</h5>
+                      <table style={{ color: "red" }}>
+                        <thead>
+                          <tr>
+                            <th style={{ border: "1px solid black" }}>country_code</th>
+                            <th style={{ border: "1px solid black" }}>country_id</th>
+                            <th style={{ border: "1px solid black" }}>country_name</th>
+                            <th style={{ border: "1px solid black" }}>country_phonecode</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {
+                            duplicateData.map((d) => (
 
-            <tr style={{ border: "1px solid black" }}>
-              <td style={{ border: "1px solid black" }}>{d.country_code}</td>
-              <td style={{ border: "1px solid black" }}>{d.country_id}</td>
-              <td style={{ border: "1px solid black" }}>{d.country_name}</td>
-              <td style={{ border: "1px solid black" }}>{d.country_phonecode}</td>
-            </tr>
-          ))
-        }
-      </tbody>
-      <tfoot></tfoot>
-      <br /><br />
-    </table>
-  </>
-  : null
-}
+                              <tr style={{ border: "1px solid black" }}>
+                                <td style={{ border: "1px solid black" }}>{d.country_code}</td>
+                                <td style={{ border: "1px solid black" }}>{d.country_id}</td>
+                                <td style={{ border: "1px solid black" }}>{d.country_name}</td>
+                                <td style={{ border: "1px solid black" }}>{d.country_phonecode}</td>
+                              </tr>
+                            ))
+                          }
+                        </tbody>
+                        <tfoot></tfoot>
+                        <br /><br />
+                      </table>
+                    </>
+                    : null
+                }
                 <table >
                   <thead>
-                    <th style={{ border: "1px solid black" }}>country_code</th>
-                    <th style={{ border: "1px solid black" }}>country_name</th>
-                    <th style={{ border: "1px solid black" }}>currency_code</th>
-                    <th style={{ border: "1px solid black" }}>currency_name</th>
-     
+                    <tr>
+                      <th style={{ border: "1px solid black" }}>country_code</th>
+                      <th style={{ border: "1px solid black" }}>country_name</th>
+                      <th style={{ border: "1px solid black" }}>currency_code</th>
+                      <th style={{ border: "1px solid black" }}>currency_name</th>
+                    </tr>
 
                   </thead>
                   <tbody>

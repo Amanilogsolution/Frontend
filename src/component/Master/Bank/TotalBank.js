@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Header from "../../Header/Header";
 import Menu from "../../Menu/Menu";
 import Footer from "../../Footer/Footer";
-import { totalBank, deleteBank,ImportBank } from '../../../api';
+import { totalBank, deleteBank, ImportBank } from '../../../api';
 import DataTable from 'react-data-table-component';
 import DataTableExtensions from 'react-data-table-component-extensions';
 import 'react-data-table-component-extensions/dist/index.css';
@@ -55,39 +55,18 @@ const columns = [
       <div className='droplist'>
         <select onChange={async (e) => {
           const status = e.target.value;
-          await deleteBank(row.sno, status)
+          await deleteBank(row.sno, status,localStorage.getItem("Organisation"))
           window.location.href = 'TotalBank'
         }
         }>
           <option selected disabled hidden> {row.status}</option>
           <option value='Active'>Active</option>
-          <option value='DeActive' >DeActive</option>
+          <option value='Deactive' >Deactive</option>
         </select>
       </div>
     ]
   },
-  // {
-  //   name:'Active',
-  //   selector: 'status',
-  //   sortable: true,
-  //   cell: (row) => [
-  //       <input type='checkbox' checked={row.status == 'Active'} value={row.status} onClick = {async(e) =>
-  //         {
-  //           console.log(e.target.value)
-  //           if(row.status == 'Active'){
-  //             const checkvalue ='Deactive'
-  //             await deleteBank(row.sno,checkvalue)
-  //                 window.location.href='TotalBank'
 
-  //           }
-  //           else{
-  //             const checkvalue ='Active'
-  //             await deleteBank(row.sno,checkvalue)
-  //                 window.location.href='TotalBank'
-  //           }
-  //          }} />
-  //   ]
-  // },
   {
     name: 'Account Type',
     selector: 'ac_type',
@@ -111,7 +90,7 @@ const columns = [
 const TotalBank = () => {
   const [data, setData] = useState([]);
   const [importdata, setImportdata] = useState([]);
-  let   [errorno, setErrorno] = useState(0);
+  let [errorno, setErrorno] = useState(0);
   const [duplicateData, setDuplicateDate] = useState([])
   const [backenddata, setBackenddata] = useState(false);
 
@@ -120,7 +99,7 @@ const TotalBank = () => {
   const uploaddata = async () => {
     document.getElementById("uploadbtn").disabled = true;
     importdata.map((d) => {
-      if (!d.bank_name || !d.account_no || !d.branch || !d.state || !d.city || !d.pincode || !d.ifsc_code || !d.ac_type || !d.acname) {
+      if (!d.bank_name  || !d.branch || !d.state || !d.city || !d.pincode || !d.ifsc_code || !d.ac_type || !d.acname) {
         setErrorno(errorno++);
       }
     })
@@ -131,7 +110,8 @@ const TotalBank = () => {
       window.location.reload()
     }
     else {
-      const result = await ImportBank(importdata,localStorage.getItem('Organisation'));
+      // console.log("importdata",importdata)
+      const result = await ImportBank(importdata, localStorage.getItem('Organisation'),localStorage.getItem("User_id"));
       if (!(result === "Data Added")) {
         setBackenddata(true);
         setDuplicateDate(result)
@@ -152,7 +132,7 @@ const TotalBank = () => {
   const handleClick = () => {
     const array = JSON.stringify(importdata)
     const datas = JSON.parse(array)
-    console.log('dates', datas)
+    // console.log('dates', datas)
     setImportdata(datas);
 
   };
@@ -186,10 +166,12 @@ const TotalBank = () => {
   };
   //##########################  for convert excel to array end #################################
 
-  useEffect(async () => {
+  useEffect( () => {
+    const fetchdata=async()=>{
     const result = await totalBank(localStorage.getItem('Organisation'));
-    // console.log(result)
-    setData(result)
+    console.log(result)
+    setData(result)}
+    fetchdata();
   }, [])
 
   const tableData = {
@@ -247,7 +229,7 @@ const TotalBank = () => {
         <div
           className="modal fade"
           id="exampleModal"
-          tabindex="-1"
+          tabIndex="-1"
           role="dialog"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
@@ -309,16 +291,16 @@ const TotalBank = () => {
         </div>
         {/* ------------------ Modal end -----------------------------*/}
         {/* ------------------ Data show Modal start -----------------------------*/}
-        <div class="modal fade bd-example-modal-lg "
+        <div className="modal fade bd-example-modal-lg "
           id="showdataModal"
-          tabindex="-1"
+          tabIndex="-1"
           role="dialog"
           aria-labelledby="myLargeModalLabel"
           aria-hidden="true"
         >
 
-          <div class="" style={{ height: "550px", width: "95%", overflow: "auto", margin: "auto" }}>
-            <div class="modal-content">
+          <div style={{ height: "550px", width: "95%", overflow: "auto", margin: "auto" }}>
+            <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="exampleModalLabel" style={{ color: "red" }}>
                   Uploaded Excel file
@@ -346,10 +328,10 @@ const TotalBank = () => {
                       <h5 style={{ margin: "auto" }}>This data already exist</h5>
                       <table style={{ color: "red", textAlign: "center", margin: "auto" }}>
                         <thead>
-
-                          <th style={{ border: "1px solid black" }}>account_no</th>
-                          <th style={{ border: "1px solid black" }}>ifsc_code</th>
-
+                          <tr>
+                            <th style={{ border: "1px solid black" }}>account_no</th>
+                            <th style={{ border: "1px solid black" }}>ifsc_code</th>
+                          </tr>
                         </thead>
                         <tbody>
                           {
@@ -372,20 +354,21 @@ const TotalBank = () => {
                 }
                 <table >
                   <thead>
-                    <th style={{ border: "1px solid black" }}>ac_type</th>
-                    <th style={{ border: "1px solid black" }}>account_code</th>
-                    <th style={{ border: "1px solid black" }}>bank_name</th>
-                    <th style={{ border: "1px solid black" }}>account_no</th>
-                    <th style={{ border: "1px solid black" }}>address_line1</th>
-                    <th style={{ border: "1px solid black" }}>address_line2</th>
-                    <th style={{ border: "1px solid black" }}>branch</th>
-                    <th style={{ border: "1px solid black" }}>state</th>
-                    <th style={{ border: "1px solid black" }}>city</th>
-                    <th style={{ border: "1px solid black" }}>pincode</th>
-                    <th style={{ border: "1px solid black" }}>ifsc_code</th>
-                    <th style={{ border: "1px solid black" }}>acname</th>
-                    <th style={{ border: "1px solid black" }}>description</th>
-
+                    <tr>
+                      <th style={{ border: "1px solid black" }}>ac_type</th>
+                      <th style={{ border: "1px solid black" }}>account_code</th>
+                      <th style={{ border: "1px solid black" }}>bank_name</th>
+                      <th style={{ border: "1px solid black" }}>account_no</th>
+                      <th style={{ border: "1px solid black" }}>address_line1</th>
+                      <th style={{ border: "1px solid black" }}>address_line2</th>
+                      <th style={{ border: "1px solid black" }}>branch</th>
+                      <th style={{ border: "1px solid black" }}>state</th>
+                      <th style={{ border: "1px solid black" }}>city</th>
+                      <th style={{ border: "1px solid black" }}>pincode</th>
+                      <th style={{ border: "1px solid black" }}>ifsc_code</th>
+                      <th style={{ border: "1px solid black" }}>acname</th>
+                      <th style={{ border: "1px solid black" }}>description</th>
+                    </tr>
                   </thead>
                   <tbody>
                     {
@@ -434,6 +417,7 @@ const TotalBank = () => {
               </button>
             </div>
           </div>
+
         </div>
         {/* ------------------ Modal end -----------------------------*/}
       </div>

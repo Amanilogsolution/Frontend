@@ -110,11 +110,11 @@ const Showvendor = () => {
 
     const uploaddata = async () => {
         document.getElementById("uploadbtn").disabled = true;
-        importdata.map((d) => {
-            if (!d.vend_name || !d.vend_email || !d.vend_phone || !d.gst_treatment || !d.pan_no || !d.currency) {
-                setErrorno(errorno++);
-            }
-        })
+        // importdata.map((d) => {
+        //     if (!d.vend_name || !d.vend_email || !d.vend_phone || !d.gst_treatment || !d.pan_no || !d.currency) {
+        //         setErrorno(errorno++);
+        //     }
+        // })
 
         if (errorno > 0) {
             alert("Please! fill the mandatory data");
@@ -122,7 +122,8 @@ const Showvendor = () => {
             window.location.reload()
         }
         else {
-              const result = await ImportVendor(importdata);
+            console.log(importdata)
+              const result = await ImportVendor(importdata,localStorage.getItem("Organisation"),localStorage.getItem("User_id"));
             console.log("result.length",result)
             if (!(result == "Data Added")) {
                 setBackenddata(true);
@@ -240,7 +241,7 @@ const Showvendor = () => {
                 <div
                     className="modal fade"
                     id="exampleModal"
-                    tabindex="-1"
+                    tabIndex="-1"
                     role="dialog"
                     aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
@@ -300,15 +301,15 @@ const Showvendor = () => {
                 </div>
                 {/* ------------------ Modal end -----------------------------*/}
                 {/* ------------------ Data show Modal start -----------------------------*/}
-                <div class="modal fade bd-example-modal-lg "
+                <div className="modal fade bd-example-modal-lg "
                     id="showdataModal"
-                    tabindex="-1"
+                    tabIndex="-1"
                     role="dialog"
                     aria-labelledby="myLargeModalLabel"
                     aria-hidden="true"
                 >
-                    <div class="" style={{ height: "550px", width: "95%", overflow: "auto", margin: "auto" }}>
-                        <div class="modal-content">
+                    <div className="" style={{ height: "550px", width: "95%", overflow: "auto", margin: "auto" }}>
+                        <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title" id="exampleModalLabel" style={{ color: "red" }}>
                                     Uploaded Excel file
@@ -364,6 +365,7 @@ const Showvendor = () => {
                                 }
                                 <table >
                                     <thead>
+                                    <tr>
                                         <th style={{ border: "1px solid black" }}>mast_id</th>
                                         <th style={{ border: "1px solid black" }}>vend_id</th>
                                         <th style={{ border: "1px solid black" }}>vend_name</th>
@@ -401,6 +403,7 @@ const Showvendor = () => {
                                         <th style={{ border: "1px solid black" }}>contact_person_designation</th>
                                         <th style={{ border: "1px solid black" }}>contact_person_department</th>
                                         <th style={{ border: "1px solid black" }}>remark</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
                                         {

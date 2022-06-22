@@ -27,7 +27,7 @@ const columns = [
           window.location.href = 'ShowcompliancesType'
         }
         }>
-          <option hidden defaultValue={row.status}> {row.status}</option>
+          <option hidden  selected value={row.status}> {row.status}</option>
           <option >Active</option>
           <option >DeActive</option>
         </select>
@@ -58,7 +58,6 @@ function ShowcomplianceType() {
 
   useEffect(async () => {
     const result = await showcompliancesType(localStorage.getItem('Organisation'))
-    console.log(result)
     setData(result)
   }, [])
 
@@ -77,6 +76,8 @@ function ShowcomplianceType() {
       <div>
         <div className="content-wrapper">
           <button type="button" style={{ float: "right", marginRight: '10%', marginTop: '1%' }} onClick={() => { window.location.href = "./AddcomplianceType" }} className="btn btn-primary">Add Compliances Type</button>
+          <button type="button" style={{ float: "right", marginRight: '2%', marginTop: '1%' }} className="btn btn-success" data-toggle="modal" data-target="#exampleModal">Import excel file</button>
+
 
 
           <div className="container-fluid">

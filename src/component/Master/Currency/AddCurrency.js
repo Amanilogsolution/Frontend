@@ -1,10 +1,13 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import Header from "../../Header/Header";
 import Menu from "../../Menu/Menu";
 import Footer from "../../Footer/Footer";
-import { InsertCurrency } from '../../../api';
+import { InsertCurrency,Activecountries } from '../../../api';
 
  const  AddCurrency = () => {
+  const [selectCountry,setSelectCountry] = useState([]);
+  const [selectedCountry,setSelectedCountry] = useState('india');
+
      const handleClick = async(e) => {
             e.preventDefault();
             const country_name = document.getElementById('country_name').value;
@@ -14,7 +17,7 @@ import { InsertCurrency } from '../../../api';
             if(!country_name||!country_code||!currency_name||!currency_code){
               alert('Enter data')
             }else{
-            const result = await InsertCurrency(country_name,country_code,currency_name,currency_code);
+            const result = await InsertCurrency(localStorage.getItem("Organisation"),localStorage.getItem("User_id"),country_name,country_code,currency_name,currency_code);
 
             if(result == "Already"){
               alert('Already')
@@ -23,6 +26,16 @@ import { InsertCurrency } from '../../../api';
             }
           }
      }
+
+     useEffect(async() => {
+      const result = await Activecountries()
+      setSelectCountry(result) 
+   }, [])
+
+   const handleChangeCountry = (e) => {
+    let data = e.target.value
+    setSelectedCountry(data)
+}
 
     return (
         <div>
@@ -45,7 +58,7 @@ import { InsertCurrency } from '../../../api';
                           <div className="form-row">
                             <label htmlFor="user_name" className="col-md-2 col-form-label font-weight-normal">Country Code</label>
                             <div className="col form-group">
-                              <input type="text" className="form-control col-md-4" id='country_code' placeholder />
+                              <input type="text" className="form-control col-md-4" id='country_code'  />
                             </div>
                             {/* form-group end.// */}
                           </div>
@@ -53,7 +66,22 @@ import { InsertCurrency } from '../../../api';
                           <div className="form-row">
                             <label htmlFor="user_name" className="col-md-2 col-form-label font-weight-normal">Country Name</label>
                             <div className="col form-group">
-                              <input type="text" className="form-control col-md-4" id='country_name'  placeholder />
+                              {/* <input type="text" className="form-control col-md-4" id='country_name'  />
+                               */}
+                               <select
+                              id="country_name"
+                              className="form-control col-md-4"
+                              onChange={handleChangeCountry}
+                            
+                            >
+                              <option  selected hidden value="India">India</option>
+                              {
+                                selectCountry.map((data,index) => (
+                                    <option  key={index} value={data.country_name}>{data.country_name}</option>
+                                ))
+                                
+                              }
+                            </select>
                             </div>
                             {/* form-group end.// */}
                           </div>
@@ -61,7 +89,7 @@ import { InsertCurrency } from '../../../api';
                           <div className="form-row">
                             <label htmlFor="user_name" className="col-md-2 col-form-label font-weight-normal">Currency Name</label>
                             <div className="col form-group">
-                              <input type="text" className="form-control col-md-4" id='currency_name' placeholder />
+                              <input type="text" className="form-control col-md-4" id='currency_name'  />
                             </div>
                             {/* form-group end.// */}
                           </div>
@@ -69,7 +97,7 @@ import { InsertCurrency } from '../../../api';
                           <div className="form-row">
                             <label htmlFor="user_name" className="col-md-2 col-form-label font-weight-normal">Currency Code</label>
                             <div className="col form-group">
-                              <input type="text" className="form-control col-md-4" id='currency_code' placeholder />
+                              <input type="text" className="form-control col-md-4" id='currency_code' />
                             </div>
                             {/* form-group end.// */}
                           </div>
