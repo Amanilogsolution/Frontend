@@ -1,30 +1,30 @@
 import React, { useState } from 'react'
-import Header from "../Header/Header";
-import Menu from "../Menu/Menu";
-import Footer from "../Footer/Footer";
+import Header from "../../Header/Header";
+import Menu from "../../Menu/Menu";
+import Footer from "../../Footer/Footer";
 
-function Estimates() {
+function RecurringBills() {
     const [totalValues, setTotalValues] = useState([1])
-    const [amount,setAmount]= useState()
+    const [amount, setAmount] = useState()
     const handleChange = (e) => {
         console.log(e.target.value)
         var desktop = e.target.value
-        if (desktop == 'Desktop') {
+        if (desktop === 'Desktop') {
             document.getElementById("Upload").click()
         }
     }
 
-    const handleChangeQuantity =(e)=>{
-        e.preventDefault()
-        console.log(e.target.value)
-    }
+    // const handleChangeQuantity =(e)=>{
+    //     e.preventDefault()
+    //     console.log(e.target.value)
+    // }
 
-    const handleBlur = ()=> {
+    const handleBlur = () => {
         const quality = document.getElementById('Quality').value
         const rate = document.getElementById('Rate').value
-        console.log(quality,rate)
-        console.log(quality*rate)
-        setAmount(quality*rate)
+        console.log(quality, rate)
+        console.log(quality * rate)
+        setAmount(quality * rate)
     }
 
     const handleAdd = (e) => {
@@ -54,22 +54,19 @@ function Estimates() {
                 </div>
                 <Header />
                 <Menu />
-
                 <div className="content-wrapper">
                     <div className="container-fluid">
-
                         <div className="row pt-3" >
                             <div className="col">
                                 <div className="card">
                                     <article
-                                        className="card-body"
-                                    >
-                                        <h3 className="text-left"> New Estimate</h3>
+                                        className="card-body" >
+                                        <h3 className="text-left">New Recurring Bill</h3>
                                         <br />
 
                                         <form autoComplete="off">
-                                            <div className="form-row mt-2">
-                                                <label className="col-md-2 col-form-label font-weight-normal" >Customer Name <span style={{ color: "red" }}>*</span> </label>
+                                        <div className="form-row mt-2">
+                                                <label className="col-md-2 col-form-label font-weight-normal" >Vendor Name <span style={{ color: "red" }}>*</span> </label>
                                                 <div className="d-flex col-md-4">
                                                     <select
                                                         id="AccountType"
@@ -82,66 +79,57 @@ function Estimates() {
                                                     <button className="ml-2 bg-white" onClick={(e) => { e.preventDefault(); window.location.href = "InsertAccountType"; localStorage.setItem('Chart', 'Chart') }} style={{ borderRadius: "50%", border: "1px solid blue", height: "25px", width: "25px", display: "flex", justifyContent: "center", alignItems: "center" }}><span style={{ color: "blue" }}>+</span></button>
                                                 </div>
                                             </div>
-                                            <div className="form-row mt-3">
-                                                <label className="col-md-2 col-form-label font-weight-normal" >Estimate#<span style={{ color: "red" }}>*</span> </label>
-                                                <div className="d-flex col-md">
-                                                    <input type="text" className="form-control col-md-5" id="Accountname" placeholder="EST-00001" />
+                                            <hr/>
+                                            
 
+                                            <div className="form-row mt-3">
+                                                <label className="col-md-2 col-form-label font-weight-normal" >Profile Name<span style={{ color: "red" }}>*</span> </label>
+                                                <div className="d-flex col-md">
+                                                    <input type="text" className="form-control col-md-5" id="Accountname" placeholder="SO-00001" />
                                                 </div>
                                             </div>
+                                            <div className="form-row mt-2" >
+                                            <label className="col-md-2 col-form-label font-weight-normal" >Repeat Every <span style={{ color: "red" }}>*</span> </label>
+                                                        <div className="d-flex col-md-4">
+                                                        <select
+                                                        id="AccountType"
+                                                        className="form-control"
+                                                    // onChange={handleAccountType}
+                                                    >
+                                                                <option  selected hidden>Week</option>
+                                                                <option>2 Week</option>
+                                                                <option>Months</option>
+                                                                <option>2 Months</option>
+                                                                <option>3 Months</option>
+                                                                <option>6 Months</option>
+                                                                <option>Year</option>
+                                                                <option>2 Year</option>
+                                                                <option>3 Year</option>
+                                                                <option>Custom</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
 
                                             <div className="form-row mt-3">
-                                                <label className="col-md-2 col-form-label font-weight-normal" >Reference# </label>
-                                                <div className="d-flex col-md">
-                                                    <input type="text" className="form-control col-md-5" id="Accountname" placeholder="EST-00001" />
-                                                </div>
-                                            </div>
-
-                                            <div className="form-row mt-3">
-                                                <label className="col-md-2 col-form-label font-weight-normal" >Estimate Date<span style={{ color: "red" }}>*</span> </label>
+                                                <label className="col-md-2 col-form-label font-weight-normal" >Start On<span style={{ color: "red" }}>*</span> </label>
                                                 <div className="d-flex col-md">
                                                     <input type="date" className="form-control col-md-6" id="Accountname" placeholder="EST-00001" />
                                                 </div>
 
-                                                <label className="col-md-1 col-form-label font-weight-normal" >Expiry Date</label>
-
+                                                <label className="col-md-1 col-form-label font-weight-normal" >Ends On</label>
                                                 <div className="d-flex col-md">
-                                                    <input type="date" className="form-control col-md-7" id="Accountname" placeholder="EST-00001" />
+                                                    <input type="date" className="form-control col-md-6" id="Accountname" placeholder="EST-00001" />
                                                 </div>
+                                               
                                             </div>
 
-                                            <hr />
 
                                             <div className="form-row mt-2">
-                                                <label className="col-md-2 col-form-label font-weight-normal" >Sales Person </label>
+                                                <label className="col-md-2 col-form-label font-weight-normal" >Payment Terms</label>
                                                 <div className="d-flex col-md-4">
                                                     <select id="AccountType" className="form-control">
-                                                        <option defaultValue hidden>Choose</option>
+                                                        <option defaultValue hidden>Due on Receipt</option>
                                                     </select>
-                                                </div>
-                                            </div>
-
-                                            <div className="form-row mt-2">
-                                                <label className="col-md-2 col-form-label font-weight-normal" >Project Name </label>
-                                                <div className="d-flex col-md-4">
-                                                    <select id="AccountType" className="form-control">
-                                                        <option defaultValue hidden>Choose</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div className="form-row mt-2">
-                                                <label className="col-md-2 " > </label>
-                                                <div className="d-flex col-md-4">
-                                                    <small>Select a customer to associate a project.</small>
-                                                </div>
-                                            </div>
-                                            <hr />
-
-                                            <div className="form-row mt-3">
-                                                <label className="col-md-2 col-form-label font-weight-normal" >Subject</label>
-                                                <div className="d-flex col-md">
-                                                    <textarea type="text" className="form-control col-md-5" id="Accountname" placeholder="Let your customer know what this estimate is for"></textarea>
                                                 </div>
                                             </div>
                                             <hr />
@@ -158,7 +146,7 @@ function Estimates() {
                                                             <tr key={index}>
                                                                 <td><input style={{ border: "none" }} type="text" placeholder="Type Items" /></td>
                                                                 <td><input style={{ border: "none" }} type="number" id="Quality" onBlur={handleBlur} placeholder="0" /></td>
-                                                                <td><input style={{ border: "none" }} type="number"id="Rate"  onBlur={handleBlur} placeholder="0.00" /></td>
+                                                                <td><input style={{ border: "none" }} type="number" id="Rate" onBlur={handleBlur} placeholder="0.00" /></td>
                                                                 <td>{amount}</td>
                                                             </tr>
 
@@ -271,4 +259,4 @@ function Estimates() {
     )
 }
 
-export default Estimates
+export default RecurringBills

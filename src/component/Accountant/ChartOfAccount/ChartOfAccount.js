@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Header from "../Header/Header";
-import Menu from "../Menu/Menu";
-import Footer from "../Footer/Footer";
-import { ShowChartOfAccount, ChartOfAccountParentAccount, ParentAccountNumber, AddAccountName, AddSubAccountName, UpdateSubAccountName, AddNewSubAccountName } from '../../api'
+import Header from "../../Header/Header";
+import Menu from "../../Menu/Menu";
+import Footer from "../../Footer/Footer";
+import { ShowChartOfAccount, ChartOfAccountParentAccount, ParentAccountNumber, AddAccountName, AddSubAccountName, UpdateSubAccountName, AddNewSubAccountName } from '../../../api'
 
 
 function ChartOfAccount() {
@@ -16,7 +16,7 @@ function ChartOfAccount() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await ShowChartOfAccount();
+      const result = await ShowChartOfAccount(localStorage.getItem("Organisation"));
       setchartofaccount(result)
 
     }
@@ -33,16 +33,16 @@ function ChartOfAccount() {
 
 
     if (Accountnamecode.length === 3) {
-      const result = await AddAccountName(AccountType, Accountname, Accountnamecode, description);
-      const data = await AddSubAccountName(AccountType, Accountnamecode)
+      const result = await AddAccountName(AccountType, Accountname, Accountnamecode, description,localStorage.getItem('Organisation'),localStorage.getItem('User_id'));
+      const data = await AddSubAccountName(AccountType, Accountnamecode,localStorage.getItem('Organisation'))
     }
     else if (Accountnamecode.length === 6) {
       if (check === true) {
 
-        const Update = await UpdateSubAccountName(Accountname, Accountnamecode, description, AccountType, parentaccount)
+        const Update = await UpdateSubAccountName(Accountname, Accountnamecode, description, AccountType, parentaccount,localStorage.getItem('Organisation'),localStorage.getItem('User_id'))
       }
       else {
-        const result = await AddNewSubAccountName(Accountname, Accountnamecode, description, AccountType, parentaccount)
+        const result = await AddNewSubAccountName(Accountname, Accountnamecode, description, AccountType, parentaccount,localStorage.getItem('Organisation'),localStorage.getItem('User_id'))
 
       }
     }
@@ -52,22 +52,31 @@ function ChartOfAccount() {
   const handleAccountType = async (e) => {
     const account_type = e.target.value;
     setaccount_type(account_type)
-    const result = await ChartOfAccountParentAccount(account_type);
+    const result = await ChartOfAccountParentAccount(account_type,localStorage.getItem('Organisation'));
     console.log(result)
     setaccount_name(result)
 
-    const number = await ParentAccountNumber(account_type, account_name);
+    const number = await ParentAccountNumber(account_type, account_name,localStorage.getItem('Organisation'));
+    console.log('Result',number)
+    if(!number.result){
+      setAccountno(account_type+'01')
+    }
+    else{
+
     const accountnamenum = parseInt(number.result.account_name_code) + 1;
     const accountnamenum1 = String(accountnamenum).padStart(2, '0');
     setAccountno(accountnamenum1)
+
     const accountsubnum = parseInt(number.result1.account_sub_name_code) + 1;
     const accountsubnum1 = String(accountsubnum).padStart(3, '0');
     setAccountsubno(accountsubnum1)
+    }
 
   }
 
   const handleParentAccount = async (e) => {
     const account_name = e.target.value;
+    console.log('Account',account_name)
     setaccount_type(account_name)
 
     const number = await ParentAccountNumber(account_type, account_name);

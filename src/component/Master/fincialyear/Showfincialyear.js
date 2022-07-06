@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Header from "../../Header/Header";
 import Menu from "../../Menu/Menu";
 import Footer from "../../Footer/Footer";
-import { Showfincialyear } from '../../../api';
+import { Showfincialyear, Statusfincialyear } from '../../../api';
 import DataTable from 'react-data-table-component';
 import DataTableExtensions from 'react-data-table-component-extensions';
 
@@ -10,53 +10,68 @@ import DataTableExtensions from 'react-data-table-component-extensions';
 const columns = [
   {
     name: 'Fincial Year',
-    selector: 'fin_year',
-    sortable: true
-  },
-  
-  {
-    name: 'from_date',
-    selector: 'from_date',
+    selector: row=>row.fin_year,
     sortable: true
   },
 
   {
-    name: 'to_date',
+    name: 'From Date',
+    selector: row=>row.from_date,
+    sortable: true
+  },
+
+  {
+    name: 'To Date',
     selector: 'to_date',
     sortable: true
   },
-//   {
-//     name: 'City ID',
-//     selector: 'city_id',
-//     sortable: true
-//   },
-//   {
-//     name: 'Status',
-//     sortable: true,
-//     selector: 'null',
-//     cell: (row) => [
-//       <div className='droplist'>
-//         <select >
-//           <option selected disabled hidden> {row.status}</option>
-//           <option value='Active'>Active</option>
-//           <option value='DeActive' >DeActive</option>
-//         </select>
-//       </div>
-//     ]
-//   },
+  {
+    name: 'Year',
+    selector:  row=>row.year,
+    sortable: true
+  },
+  {
+    name: 'Vendor Master',
+    selector: row=>row.mvend_id,
+    sortable: true
+  },
+  {
+    name: 'Vendor ID',
+    selector: row=>row.vend_id,
+    sortable: true
+  },
+  {
+    name: 'Customer Master',
+    selector: row=>row.mcust_id,
+    sortable: true
+  },
+  {
+    name: 'Customer id',
+    selector:  row=>row.cust_id,
+    sortable: true
+  },
 
-//   {
-//     name: "Actions",
-//     sortable: false,
+  {
+    name: 'Active ',
+    selector:  row=>row.status,
+    sortable: true,
+    cell: (row) => [
+      <input type="checkbox" checked={row.status == 'Active' ? true : false} onChange={async() => {const result=await Statusfincialyear(localStorage.getItem('Organisation'),row.sno)
+     if(result.rowsAffected[0]){window.location.href="./showfincialyear"}} }/>
+    ]
+  },
+  {
+    name: "Actions",
+    sortable: false,
 
-//     selector: "null",
-//     cell: (row) => [
+    selector:  row=>row.null,
+    cell: (row) => [
 
-//       <a title='View Document' href="EditCity">
-//         <button className="editbtn btn-success " onClick={() => localStorage.setItem('citySno', `${row.sno}`)} >Edit</button></a>
+      <a title='View Document' href="/Updatefincialyear">
+        <button className="editbtn btn-success " onClick={() => localStorage.setItem('FinsyearSno', `${row.sno}`)} >Edit</button></a>
 
-//     ]
-//   }
+    ]
+  }
 
 
 ]
@@ -67,8 +82,8 @@ const ShowFincialyear = () => {
 
 
   useEffect(async () => {
-    const result = await Showfincialyear()
-    console.log(result)
+    const result = await Showfincialyear(localStorage.getItem('Organisation'))
+    // console.log(result)
     setData(result)
   }, [])
 
@@ -91,7 +106,7 @@ const ShowFincialyear = () => {
             <div className="container-fluid">
               <br />
 
-              <h3 className="text-left ml-5">Fincial year</h3>
+              <h3 className="text-left ml-5">Financial year</h3>
               <br />
               <div className="row ">
                 <div className="col ml-5">
@@ -117,7 +132,7 @@ const ShowFincialyear = () => {
             </div>
           </div>
         </div>
-       
+
         <Footer />
       </div>
     </div>
